@@ -1,7 +1,28 @@
 import NextAuth from "next-auth"
-import GitHub from "next-auth/providers/github"
-import Google from "next-auth/providers/google"
- 
-export const { auth, handlers, signIn, signOut } = NextAuth({
-  providers: [GitHub, Google],
+import EmailProvider from 'next-auth/providers/nodemailer'
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { prisma } from "../database"
+import { signIn, signOut } from "next-auth/react"
+import { error } from "console"
+
+export const {
+    handlers: { GET, POST },
+    auth
+} = NextAuth({
+    pages: {
+        signIn: '/auth',
+        signOut: '/auth',
+        error: '/auth',
+        verifyRequest: '/auth',
+        newUser: '/app'
+    },
+    adapter: PrismaAdapter(prisma),
+    providers: [
+        EmailProvider({
+            
+            server: process.env.EMAIL_SERVER,
+            from: process.env.EMAIL_FROM
+        }),
+    ],
+    secret: process.env.NEXTAUTH_SECRET, // Adicione esta linha
 })

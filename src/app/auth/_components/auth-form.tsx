@@ -5,25 +5,21 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
-import { toast } from '@/hooks/use-toast' 
+import { toast } from 'sonner'
 
 export function AuthForm() {
   const form = useForm()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    try {
-      await signIn('nodemailer', { email: data.email, redirect: false })
-
-      toast({
-        title: 'Magic Link Sent',
-        description: 'Check your email for the magic link to login',
-      })
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'An error occurred. Please try again.',
-      })
-    }
+      try {
+        console.log(data)
+        await signIn('nodemailer', { email: data.email, redirect: false })
+        toast.success('Enviamos um link de autenticação para seu e-mail')
+        console.log('passei o toast')
+      } catch (error) {
+        toast.error('Não foi possível enviar o e-mail de autenticação, por favor tente novamente.')
+      }
+    
   })
 
   return (
