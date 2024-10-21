@@ -18,7 +18,9 @@ export function UserInfo({ user }: Props) {
       </Avatar>
       <span>{user?.email}</span>
 
-      <Button onClick={() => signOut()}>Sign Out</Button>
+      <Button variant="outline" onClick={() => signOut()}>
+        Sign Out
+      </Button>
     </div>
   )
 }

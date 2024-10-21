@@ -1,25 +1,25 @@
 'use client'
 
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { useForm } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
+import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export function AuthForm() {
   const form = useForm()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-      try {
-        console.log(data)
-        await signIn('nodemailer', { email: data.email, redirect: false })
-        toast.success('Enviamos um link de autenticação para seu e-mail')
-        console.log('passei o toast')
-      } catch (error) {
-        toast.error('Não foi possível enviar o e-mail de autenticação, por favor tente novamente.')
-      }
-    
+    try {
+      await signIn('nodemailer', { email: data.email, redirect: false })
+      toast.success('Enviamos um link de autenticação para seu e-mail')
+    } catch (error) {
+      toast.error(
+        'Não foi possível enviar o e-mail de autenticação, por favor tente novamente.',
+      )
+    }
   })
 
   return (
