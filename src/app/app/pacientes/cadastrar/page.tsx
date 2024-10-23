@@ -1,9 +1,12 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -17,61 +20,43 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 
-interface Patient {
-  id: number
-  name: string
-  age: number
-  gender: string
-  cpf: string
-  address: string
-  contact: string
-  medicalHistory: string
-  preExistingConditions: string
-  documents: File[]
-}
+// Definindo o esquema de validação usando Zod
+const patientSchema = z.object({
+  name: z.string().nonempty('Nome é obrigatório'),
+  age: z.number().min(0, 'Idade deve ser um número positivo'),
+  gender: z
+    .enum(['male', 'female', 'other'])
+    .refine((value) => value !== undefined, {
+      message: 'Selecione um gênero',
+    }),
+  cpf: z.string().regex(/^\d{11}$/, 'CPF inválido, deve ter 11 dígitos'),
+  address: z.string().nonempty('Endereço é obrigatório'),
+  contact: z.string().nonempty('Contato é obrigatório'),
+  medicalHistory: z.string().optional(),
+  preExistingConditions: z.string().optional(),
+  documents: z.any().optional(),
+})
+
+type Patient = z.infer<typeof patientSchema>
 
 export default function PatientRegistration() {
   const router = useRouter()
-  const [newPatient, setNewPatient] = useState<Omit<Patient, 'id'>>({
-    name: '',
-    age: 0,
-    gender: '',
-    cpf: '',
-    address: '',
-    contact: '',
-    medicalHistory: '',
-    preExistingConditions: '',
-    documents: [],
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<Patient>({
+    resolver: zodResolver(patientSchema), // Integração com Zod para validação
   })
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target
-    setNewPatient((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSelectChange = (name: string, value: string) => {
-    setNewPatient((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setNewPatient((prev) => ({
-        ...prev,
-        documents: Array.from(e.target.files || []),
-      }))
-    }
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    // In a real application, you would send this data to your API
-    console.log('Submitting patient data:', newPatient)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    // Redirect to search page after successful submission
-    router.push('/patient-search')
+  const onSubmit = async (data: Patient) => {
+    console.log('Submitting patient data:', data)
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    toast.success('Paciente cadastrado com sucesso!')
+    router.push('/app/pacientes/')
   }
 
   return (
@@ -85,38 +70,34 @@ export default function PatientRegistration() {
 
         <h1 className="mb-4 text-2xl font-bold">Cadastrar Novo Paciente</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <Label htmlFor="name">Nome</Label>
-              <Input
-                id="name"
-                name="name"
-                value={newPatient.name}
-                onChange={handleInputChange}
-                required
-              />
+              <Input id="name" {...register('name')} />
+              {errors.name && (
+                <p className="text-red-500">{errors.name.message}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="age">Idade</Label>
               <Input
                 id="age"
-                name="age"
                 type="number"
-                value={newPatient.age}
-                onChange={handleInputChange}
-                required
+                {...register('age', { valueAsNumber: true })}
               />
+              {errors.age && (
+                <p className="text-red-500">{errors.age.message}</p>
+              )}
             </div>
             <div>
-              <Label htmlFor="gender">Genero</Label>
+              <Label htmlFor="gender">Gênero</Label>
               <Select
-                name="gender"
-                value={newPatient.gender}
-                onValueChange={(value) => handleSelectChange('gender', value)}
+                onValueChange={(value) => setValue('gender', value)}
+                value={watch('gender') || ''}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecione o Genêro" />
+                  <SelectValue placeholder="Selecione o Gênero" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="male">Masculino</SelectItem>
@@ -124,45 +105,34 @@ export default function PatientRegistration() {
                   <SelectItem value="other">Outro</SelectItem>
                 </SelectContent>
               </Select>
+              {errors.gender && (
+                <p className="text-red-500">{errors.gender.message}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="cpf">CPF</Label>
-              <Input
-                id="cpf"
-                name="cpf"
-                value={newPatient.cpf}
-                onChange={handleInputChange}
-                required
-              />
+              <Input id="cpf" {...register('cpf')} />
+              {errors.cpf && (
+                <p className="text-red-500">{errors.cpf.message}</p>
+              )}
             </div>
             <div className="md:col-span-2">
               <Label htmlFor="address">Endereço</Label>
-              <Input
-                id="address"
-                name="address"
-                value={newPatient.address}
-                onChange={handleInputChange}
-                required
-              />
+              <Input id="address" {...register('address')} />
+              {errors.address && (
+                <p className="text-red-500">{errors.address.message}</p>
+              )}
             </div>
             <div className="md:col-span-2">
               <Label htmlFor="contact">Contato</Label>
-              <Input
-                id="contact"
-                name="contact"
-                value={newPatient.contact}
-                onChange={handleInputChange}
-                required
-              />
+              <Input id="contact" {...register('contact')} />
+              {errors.contact && (
+                <p className="text-red-500">{errors.contact.message}</p>
+              )}
             </div>
             <div className="md:col-span-2">
               <Label htmlFor="medicalHistory">Histórico Médico</Label>
-              <Textarea
-                id="medicalHistory"
-                name="medicalHistory"
-                value={newPatient.medicalHistory}
-                onChange={handleInputChange}
-              />
+              <Textarea id="medicalHistory" {...register('medicalHistory')} />
             </div>
             <div className="md:col-span-2">
               <Label htmlFor="preExistingConditions">
@@ -170,9 +140,7 @@ export default function PatientRegistration() {
               </Label>
               <Textarea
                 id="preExistingConditions"
-                name="preExistingConditions"
-                value={newPatient.preExistingConditions}
-                onChange={handleInputChange}
+                {...register('preExistingConditions')}
               />
             </div>
             <div className="md:col-span-2">
@@ -181,8 +149,7 @@ export default function PatientRegistration() {
                 id="documents"
                 type="file"
                 multiple
-                onChange={handleFileChange}
-                className="cursor-pointer"
+                {...register('documents')}
               />
             </div>
           </div>

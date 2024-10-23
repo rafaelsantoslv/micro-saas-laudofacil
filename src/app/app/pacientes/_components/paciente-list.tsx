@@ -104,7 +104,7 @@ export default function PatientSearch() {
               <p>
                 <strong>Contato:</strong> {patient.contact}
               </p>
-              <Link href={`/patient-edit/${patient.id}`} passHref>
+              <Link href={`/app/pacientes/${patient.id}`} passHref>
                 <Button variant="outline" className="mt-2">
                   <Edit className="mr-2 h-4 w-4" /> Detalhes Paciente
                 </Button>
