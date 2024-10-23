@@ -1,11 +1,7 @@
-export const metadata = {
-  title: 'Configurações',
-}
-
 export default function Page() {
   return (
     <main className="flex h-screen items-center justify-center">
-      <h1>settings</h1>
+      <h1>Laudos</h1>
     </main>
   )
 }

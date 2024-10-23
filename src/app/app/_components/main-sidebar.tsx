@@ -1,6 +1,11 @@
 'use client'
 
-import { HomeIcon, MixerVerticalIcon } from '@radix-ui/react-icons'
+import {
+  FileTextIcon,
+  HomeIcon,
+  MixerVerticalIcon,
+  PersonIcon,
+} from '@radix-ui/react-icons'
 import { usePathname } from 'next/navigation'
 
 import {
@@ -35,6 +40,17 @@ export function MainSidebar() {
             <SidebarNavLink href="/app" active={isActive('/app')}>
               <HomeIcon className="mr-3 h-3 w-3" />
               Home
+            </SidebarNavLink>
+            <SidebarNavLink
+              href="/app/pacientes"
+              active={isActive('/app/pacientes')}
+            >
+              <PersonIcon className="mr-3 h-3 w-3" />
+              Pacientes
+            </SidebarNavLink>
+            <SidebarNavLink href="/app/laudos" active={isActive('/app/laudos')}>
+              <FileTextIcon className="mr-3 h-3 w-3" />
+              Laudos
             </SidebarNavLink>
             <SidebarNavLink
               href="/app/settings"
