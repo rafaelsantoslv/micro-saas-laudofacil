@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { auth } from '@/services/auth'
 
 import { UserInfo } from './_components/user-info'
