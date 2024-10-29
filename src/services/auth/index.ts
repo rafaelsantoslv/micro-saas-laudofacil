@@ -1,6 +1,6 @@
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import NextAuth from 'next-auth'
-import EmailProvider from 'next-auth/providers/nodemailer'
+import CredentialsProvider from 'next-auth/providers/credentials'
 
 import { prisma } from '../database'
 
@@ -9,7 +9,7 @@ export const {
   auth,
 } = NextAuth({
   pages: {
-    signIn: '/auth',
+    signIn: '/signin',
     signOut: '/auth',
     error: '/auth',
     verifyRequest: '/auth',
@@ -17,10 +17,33 @@ export const {
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    EmailProvider({
-      server: process.env.EMAIL_SERVER,
-      from: process.env.EMAIL_FROM,
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials) {
+        if (!credentials) {
+          return null
+        }
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        })
+
+        if (user && user.password === credentials.password) {
+          // Substitua por uma verificação de hash real
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+          }
+        } else {
+          return null
+        }
+      },
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET, // Adicione esta linha
+  secret: process.env.NEXTAUTH_SECRET,
 })

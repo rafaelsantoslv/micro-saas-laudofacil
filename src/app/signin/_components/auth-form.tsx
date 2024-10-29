@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -10,15 +11,23 @@ import { Label } from '@/components/ui/label'
 
 export function AuthForm() {
   const form = useForm()
+  const router = useRouter()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      await signIn('nodemailer', { email: data.email, redirect: false })
-      toast.success('Enviamos um link de autenticação para seu e-mail')
+      const result = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+      })
+
+      if (result?.ok) {
+        toast.success('Login realizado com sucesso!')
+        router.push('/app')
+      } else {
+        toast.error('Credenciais inválidas. Tente novamente.')
+      }
     } catch (error) {
-      toast.error(
-        'Não foi possível enviar o e-mail de autenticação, por favor tente novamente.',
-      )
+      toast.error('Não foi possível autenticar. Por favor, tente novamente.')
     }
   })
 
@@ -40,13 +49,13 @@ export function AuthForm() {
             type="email"
             {...form.register('email')}
           />
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="password">Senha</Label>
           <Input
             id="password"
             placeholder="Sua senha"
             required
             type="password"
-            {...form.register('email')}
+            {...form.register('password')}
           />
         </div>
         <Button
@@ -54,7 +63,7 @@ export function AuthForm() {
           type="submit"
           disabled={form.formState.isSubmitting}
         >
-          {form.formState.isSubmitting ? 'Sending...' : 'Realizar Login'}
+          {form.formState.isSubmitting ? 'Enviando...' : 'Realizar Login'}
         </Button>
       </form>
     </div>

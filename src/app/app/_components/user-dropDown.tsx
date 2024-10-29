@@ -1,4 +1,5 @@
 import { HomeIcon, LockClosedIcon, RocketIcon } from '@radix-ui/react-icons'
+import { signOut } from 'next-auth/react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -53,7 +54,7 @@ export function UserDropdown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => signOut()}>
           <LockClosedIcon />
           Log out
         </DropdownMenuItem>
