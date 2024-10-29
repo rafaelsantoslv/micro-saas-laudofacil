@@ -69,23 +69,23 @@ export default function Component() {
             <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-3 lg:gap-12">
               <Card>
                 <CardHeader>
-                  <CardTitle>Plano Mensal</CardTitle>
+                  <CardTitle>Plano Básico</CardTitle>
                   <CardDescription>
                     perfeito para pequenas clinicas
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-4xl font-bold">R$149.90</div>
+                  <div className="text-4xl font-bold">R$149,90</div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     por mês
                   </p>
                   <ul className="mt-4 space-y-2">
                     <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-green-500" />5 Médicos
+                      <Check className="mr-2 h-4 w-4 text-green-500" />1 Usuário
                     </li>
                     <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-green-500" />3
-                      Auxiliares
+                      <Check className="mr-2 h-4 w-4 text-green-500" />
+                      Administração básica
                     </li>
                   </ul>
                 </CardContent>
@@ -95,24 +95,24 @@ export default function Component() {
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle>Plano Semestral</CardTitle>
+                  <CardTitle>Plano Executivo</CardTitle>
                   <CardDescription>
                     Ótimo para clínicas em crescimento
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-4xl font-bold">R$749.90</div>
+                  <div className="text-4xl font-bold">R$249,90</div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    por 6 meses
+                    por mês
                   </p>
                   <ul className="mt-4 space-y-2">
                     <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-green-500" />
-                      10 Médicos
+                      <Check className="mr-2 h-4 w-4 text-green-500" />5
+                      Usuários
                     </li>
                     <li className="flex items-center">
-                      <Check className="mr-2 h-4 w-4 text-green-500" />5
-                      Assistentes
+                      <Check className="mr-2 h-4 w-4 text-green-500" />
+                      Envio de laudos por e-mail
                     </li>
                   </ul>
                 </CardContent>
@@ -122,24 +122,24 @@ export default function Component() {
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle>Plano Anual</CardTitle>
+                  <CardTitle>Plano Coorporativo</CardTitle>
                   <CardDescription>
                     Ideal para grandes centros médicos
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-4xl font-bold">R$1499.90</div>
+                  <div className="text-4xl font-bold">R$499,90</div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    por ano
+                    por mês
                   </p>
                   <ul className="mt-4 space-y-2">
                     <li className="flex items-center">
                       <Check className="mr-2 h-4 w-4 text-green-500" />
-                      15 Médicos
+                      15 usuários
                     </li>
                     <li className="flex items-center">
                       <Check className="mr-2 h-4 w-4 text-green-500" />
-                      10 Assistentes
+                      Modelos de laudos
                     </li>
                   </ul>
                 </CardContent>
@@ -150,10 +150,10 @@ export default function Component() {
             </div>
             <div className="mx-auto mt-12 max-w-3xl text-center text-gray-500 dark:text-gray-400">
               <p>
-                Licenças médicas adicionais ou assistentes individuais podem ser
-                contratado separadamente. Também oferecemos opções de suporte
-                personalizáveis durante o horário comercial ou 24 horas por dia,
-                7 dias por semana, individualmente.
+                Licenças adicionais ou planos personalizados podem ser
+                contratado com nossos consultores. Também oferecemos opções de
+                suporte personalizáveis durante o horário comercial ou 24 horas
+                por dia, 7 dias por semana, individualmente.
               </p>
             </div>
           </div>
@@ -173,7 +173,7 @@ export default function Component() {
               <div className="w-full max-w-sm space-y-2">
                 <Button className="w-full" size="lg">
                   <Users className="mr-2 h-4 w-4" />
-                  Agendar Consulta
+                  Agendar Demonstração
                 </Button>
               </div>
             </div>

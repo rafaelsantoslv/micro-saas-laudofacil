@@ -27,7 +27,7 @@ export function AuthForm() {
       <div className="space-y-2 text-center">
         <h1 className="text-3xl font-bold">Login</h1>
         <p className="text-gray-500 dark:text-gray-400">
-          Enter your email below to login to your account
+          Entre com seu e-mail e senha
         </p>
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -35,9 +35,17 @@ export function AuthForm() {
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
-            placeholder="m@example.com"
+            placeholder="m@exemplo.com"
             required
             type="email"
+            {...form.register('email')}
+          />
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="password"
+            placeholder="Sua senha"
+            required
+            type="password"
             {...form.register('email')}
           />
         </div>
@@ -46,7 +54,7 @@ export function AuthForm() {
           type="submit"
           disabled={form.formState.isSubmitting}
         >
-          {form.formState.isSubmitting ? 'Sending...' : 'Send Magic Link'}
+          {form.formState.isSubmitting ? 'Sending...' : 'Realizar Login'}
         </Button>
       </form>
     </div>

@@ -6,6 +6,7 @@ import {
   MixerVerticalIcon,
   PersonIcon,
 } from '@radix-ui/react-icons'
+import { Settings2Icon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
 import {
@@ -51,6 +52,10 @@ export function MainSidebar() {
             <SidebarNavLink href="/app/laudos" active={isActive('/app/laudos')}>
               <FileTextIcon className="mr-3 h-3 w-3" />
               Laudos
+            </SidebarNavLink>
+            <SidebarNavLink href="/app/admin" active={isActive('/app/admin')}>
+              <Settings2Icon className="mr-3 h-3 w-3" />
+              Administração
             </SidebarNavLink>
             <SidebarNavLink
               href="/app/settings"
